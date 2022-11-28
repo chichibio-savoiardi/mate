@@ -1,6 +1,10 @@
-# Main Class, change as preferred
+# Main Class, project name, change as preferred
 MAIN_CLASS := App
-TARGET_EXEC := $(MAIN_CLASS).jar
+PRJ_NAME := mate
+
+# Names for generated files
+TARGET_EXEC := $(PRJ_NAME).jar
+TARGET_LIB := lib$(PRJ_NAME).jar
 
 # Directories for where to find build files, libraries and sources, respectively
 BUILD_DIR := ./bin
@@ -33,6 +37,10 @@ classes: $(SRCS)
 jar: classes
 	jar --create --file $(BUILD_DIR)/$(TARGET_EXEC) --main-class $(MAIN_CLASS).main $(CLS)
 
+# Generate .jar artifact with no main
+jarlib: classes
+	jar --create --file $(BUILD_DIR)/$(TARGET_LIB) $(CLS)
+
 # Generate documentation
 docs: $(SRCS)
 	javadoc -d $(DOC_DIR) -cp $(BUILD_CP) $(SRCS)
@@ -45,7 +53,7 @@ clean:
 cleandoc:
 	rm -r $(DOC_DIR)
 
-all: classes jar docs
+all: classes jar jarlib docs
 
 cleanall: clean cleandoc
 

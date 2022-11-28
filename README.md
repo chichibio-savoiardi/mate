@@ -1,18 +1,19 @@
-## Getting Started
+# Math as programming homework
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Done as i could not bring myself to exercise on math stuff consistently.
 
-## Folder Structure
+## Libraries
 
-The workspace contains two folders by default, where:
+Necessary libraries for compiling the project.
+* [lombok](https://projectlombok.org/)
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## Running
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+This project uses `make` to run and compile itself, use with `make [cmd]`, the commands are as follows:
+* `run`: the default target, will compile classes and run the project in the JVM.
+* `classes`: compile the source files to class files in a to be generated `bin/` directory.
+* `jar`: pack tthe class files inside a `.jar` file with main class.
+* `jarlib`: same as previous, but with no main class.
+* `docs`: make the documentation for the project.
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+The `make` command is available only on unix-like systems, for users of inferior systems one may use [WSL](https://learn.microsoft.com/en-us/windows/wsl/) or [MSYS2](https://www.msys2.org/).
