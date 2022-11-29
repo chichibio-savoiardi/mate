@@ -1,5 +1,5 @@
 # Main Class, project name, change as preferred
-MAIN_CLASS := App
+MAIN_CLASS := program.Main
 PRJ_NAME := mate
 
 # Names for generated files
