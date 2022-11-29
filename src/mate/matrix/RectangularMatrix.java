@@ -88,7 +88,7 @@ public class RectangularMatrix {
 
 		for (int i = 0; i < newRows; i++) {
 			for (int j = 0; j < newCols; j++) {
-				for (int k = 0; k < rowLength; k++) {
+				for (int k = 0; k < colLength; k++) {
 					res[i][j] += mat[i][k] * other.get(k, j);
 				}
 			}
