@@ -29,12 +29,19 @@ public class Result<T> {
 		this.content = content;
 		this.fullMessage = String.format("%s [%d] %s", content.getClass(), error, message);
 	}
-
-	public void throwLoud() throws Exception {
-		throw new Exception(fullMessage);
+	
+	public T getContent() {
+		if (content == null) {
+			throw new ContentNotPresentException(fullMessage);//throwSilent();
+		}
+		return content;
 	}
 
-	public void throwSilent() throws RuntimeException {
-		throw new RuntimeException(fullMessage);
+	public void throwLoud() throws LoudResultException {
+		throw new LoudResultException(fullMessage);
+	}
+
+	public void throwSilent() throws SilentResultException {
+		throw new SilentResultException(fullMessage);
 	}
 }
