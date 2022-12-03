@@ -1,6 +1,7 @@
 package program;
 
 import mate.matrix.RectangularMatrix;
+import mate.matrix.SquareMatrix;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -9,10 +10,15 @@ public class Main {
 		r1.initRandom(0, 9);
 		r2.initRandom(0, 9);
 
-		RectangularMatrix r3 = new RectangularMatrix(r1.product(r2).getContent());
+		RectangularMatrix r3 = r1.product(r2).getContent();
 
 		System.out.println(r1);
 		System.out.println(r2);
 		System.out.println(r3);
+		
+		SquareMatrix s1 = new SquareMatrix(4);
+		s1.initRandom(0, 9);
+
+		System.out.printf("Determinant: %f\n", s1.getDeterminant());
     }
 }
