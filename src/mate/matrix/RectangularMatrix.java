@@ -28,11 +28,11 @@ public class RectangularMatrix {
 		colLength = matrix[0].length;
 	}
 
-	public void initRandom(double min, double max) {
+	public void initRandom(int min, int max) {
 		Random rng = new Random();
 		for (int i = 0; i < rowLength; i++) {
 			for (int j = 0; j < colLength; j++) {
-				mat[i][j] = rng.nextDouble(min, max);
+				mat[i][j] = rng.nextInt(min, max);
 			}
 		}
 	}
@@ -102,11 +102,17 @@ public class RectangularMatrix {
 		}
 
 		double[][] newmat = new double[rowLength - 1][colLength];
-		for (int i = 0; i < mat.length; i++) {
+
+		for (int i = 0, k = 0; i < mat.length; i++) {
 			if (i == row) {
 				continue;
 			}
-			System.arraycopy(mat, 0, newmat, 0, colLength - 1);
+
+			for (int j = 0; j < mat[i].length; j++) {
+				newmat[k][j] = mat[i][j];
+			}
+
+			k++;
 		}
 
 		return new Result<>(new RectangularMatrix(newmat));
@@ -124,6 +130,7 @@ public class RectangularMatrix {
 				if (j == col) {
 					continue;
 				}
+
 				newmat[i][k++] = mat[i][j];
 			}
 		}
@@ -138,7 +145,7 @@ public class RectangularMatrix {
 		for (double[] ds : mat) {
 			out.append("\n\t\t[ ");
 			for (double d : ds) {
-				out.append(String.format("%.2f ", d));
+				out.append(String.format("%.1f ", d));
 			}
 			out.append("]");
 		}
