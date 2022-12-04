@@ -16,7 +16,6 @@ public class Main {
 		System.out.println(r2);
 		System.out.println(r3);
 		
-		
 		System.out.println(r1.remRow(0).getContent());
 		System.out.println(r1.remCol(1).getContent());
 

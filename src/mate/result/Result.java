@@ -11,7 +11,7 @@ public class Result<T> {
 
 	public Result(T cont) {
 		this.error = 0;
-		this.message = "";
+		this.message = "OK";
 		this.content = cont;
 		this.fullMessage = String.format("%s [%d] %s", content.getClass(), error, message);
 	}
@@ -43,5 +43,14 @@ public class Result<T> {
 
 	public void throwSilent() throws SilentResultException {
 		throw new SilentResultException(fullMessage);
+	}
+	
+	public void panic() {
+		try {
+			throw new Panic(fullMessage);
+		} catch (Panic p) {
+			p.printStackTrace();
+			System.exit(error);
+		}
 	}
 }
