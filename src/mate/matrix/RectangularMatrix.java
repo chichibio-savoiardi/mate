@@ -95,6 +95,10 @@ public class RectangularMatrix {
 
 		return new Result<>(new RectangularMatrix(res));
 	}
+
+	public int getRank() {
+		return 0;
+	}
 	
 	public Result<RectangularMatrix> remRow(int row) {
 		if (row < 0 || row >= rowLength) {
