@@ -51,7 +51,14 @@ public class SquareMatrix extends RectangularMatrix {
 			double det = s1.getDeterminant();
 			out += Math.pow(-1, i) * mat[0][i] * det;
 		}
-		
+	
 		return out;
+	}
+	
+	@Override
+	public String toString() {
+		String old = super.toString();
+		String newstr = old.replaceFirst("\n\tRank:", String.format("\n\tDet: %f\n\tRank:", getDeterminant()));
+		return newstr;
 	}
 }

@@ -97,7 +97,31 @@ public class RectangularMatrix {
 	}
 
 	public int getRank() {
-		return 0;
+		if (rowLength == colLength) {
+			SquareMatrix sq = new SquareMatrix(mat);
+			if (sq.getDeterminant() != 0) {
+				return rowLength;
+			}
+		}
+		
+		return getBiggestSquareMatrix().getContent().getRank();
+	}
+	
+	public Result<SquareMatrix> getBiggestSquareMatrix() {
+		RectangularMatrix rect = new RectangularMatrix(mat.clone());
+
+		do {
+			if (rect.getRowLength() < rect.getColLength()) {
+				rect = rect.remCol(rect.getColLength() - 1).getContent();
+			} else if (rect.getRowLength() > rect.getColLength()) {
+				rect = rect.remRow(rect.getRowLength() - 1).getContent();
+			} else {
+				rect = rect.remRow(rect.getRowLength() - 1).getContent();
+				rect = rect.remCol(rect.getColLength() - 1).getContent();
+			}
+		} while (rect.getRowLength() != rect.getColLength());
+
+		return new Result<>(new SquareMatrix(rect.getMat()));
 	}
 	
 	public Result<RectangularMatrix> remRow(int row) {
@@ -145,7 +169,7 @@ public class RectangularMatrix {
 	@Override
 	public String toString() {
 		StringBuilder out = new StringBuilder();
-		out.append(String.format("%s (\n\tRows: %d\n\tCols: %d\n\tMatrice (", this.getClass(), rowLength, colLength));
+		out.append(String.format("%s (\n\tRows: %d\n\tCols: %d\n\tRank: %d\n\tMatrix: (", this.getClass(), rowLength, colLength, getRank()));
 		for (double[] ds : mat) {
 			out.append("\n\t\t[ ");
 			for (double d : ds) {

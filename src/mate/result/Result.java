@@ -32,8 +32,9 @@ public class Result<T> {
 	
 	public T getContent() {
 		if (content == null) {
-			throw new ContentNotPresentException(fullMessage);//throwSilent();
+			panic();
 		}
+
 		return content;
 	}
 
