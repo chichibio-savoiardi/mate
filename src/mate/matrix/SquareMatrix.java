@@ -57,8 +57,6 @@ public class SquareMatrix extends RectangularMatrix {
 	
 	@Override
 	public String toString() {
-		String old = super.toString();
-		String newstr = old.replaceFirst("\n\tRank:", String.format("\n\tDet: %f\n\tRank:", getDeterminant()));
-		return newstr;
+		return super.toString().replaceFirst("\n\tRank:", String.format("\n\tDet: %f\n\tRank:", getDeterminant()));
 	}
 }
