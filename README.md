@@ -4,7 +4,7 @@ Done as i could not bring myself to exercise on math stuff consistently.
 
 ## Libraries
 
-Necessary libraries for compiling the project.
+Necessary libraries for compiling the project, to be put under a `lib/` directory in the root of the project.
 * [lombok](https://projectlombok.org/)
 
 ## Running
