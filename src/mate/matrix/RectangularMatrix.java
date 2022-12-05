@@ -2,7 +2,7 @@ package mate.matrix;
 
 import java.util.Random;
 import lombok.Getter;
-import mate.result.Result;
+import utils.result.Result;
 
 /**
  * RectangularMatrix

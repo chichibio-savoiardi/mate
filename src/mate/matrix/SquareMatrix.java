@@ -36,10 +36,8 @@ public class SquareMatrix extends RectangularMatrix {
 				);
 
 			default:
-				break;
+				return laplace();
 		}
-
-		return laplace();
 	}
 
 	private double laplace() {

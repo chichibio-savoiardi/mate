@@ -1,4 +1,6 @@
-package mate.result;
+package utils.result;
+
+import java.util.function.Supplier;
 
 import lombok.Data;
 
@@ -35,6 +37,26 @@ public class Result<T> {
 			panic();
 		}
 
+		return content;
+	}
+	
+	public T getContentUnchecked() {
+		return content;
+	}
+
+	public T getContentOr(T other) {
+		if (content == null) {
+			return other;
+		}
+		
+		return content;
+	}
+
+	public T getContentOrElse(Supplier<T> fn) {
+		if (content == null) {
+			return fn.get();
+		}
+		
 		return content;
 	}
 
