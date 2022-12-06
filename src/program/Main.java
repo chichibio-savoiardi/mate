@@ -15,14 +15,13 @@ public class Main {
 		System.out.println(r1);
 		System.out.println(r2);
 		System.out.println(r3);
-		
+
 		System.out.println(r1.remRow(0).getContent());
 		System.out.println(r1.remCol(1).getContent());
 
 		SquareMatrix s1 = new SquareMatrix(4);
 		s1.initRandom(0, 9);
-		
-		System.out.printf("%s\n", s1.toString());
-		System.out.printf("Determinant: %f\n", s1.getDeterminant());
+
+		System.out.println(s1);
     }
 }

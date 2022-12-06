@@ -44,15 +44,14 @@ public class SquareMatrix extends RectangularMatrix {
 		double out = 0;
 
 		for (int i = 0; i < mat[0].length; i++) {
-			RectangularMatrix r1 = this.remRow(0).getContent();
-			SquareMatrix s1 = new SquareMatrix(r1.remCol(i).getContent().getMat());
+			SquareMatrix s1 = this.getBiggestSquareMatrix().getContent();
 			double det = s1.getDeterminant();
 			out += Math.pow(-1, i) * mat[0][i] * det;
 		}
-	
+
 		return out;
 	}
-	
+
 	@Override
 	public String toString() {
 		return super.toString().replaceFirst("\n\tRank:", String.format("\n\tDet: %f\n\tRank:", getDeterminant()));
