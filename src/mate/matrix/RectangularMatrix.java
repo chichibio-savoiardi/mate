@@ -1,7 +1,9 @@
 package mate.matrix;
 
 import java.util.Random;
+
 import lombok.Getter;
+import mate.matrix.vector.ColVector;
 import utils.result.Result;
 
 /**
@@ -183,6 +185,22 @@ public class RectangularMatrix {
 		}
 
 		return new Result<>(new SquareMatrix(mat));
+	}
+
+	public Result<RectangularMatrix> append(ColVector vec) {
+		double[][] newmat = new double[rowLength][colLength + 1];
+
+		for (int i = 0; i < rowLength; i++) {
+			for (int j = 0; j < colLength; j++) {
+				newmat[i][j] = mat[i][j];
+			}
+		}
+
+		for (int i = 0; i < newmat.length; i++) {
+			newmat[i][colLength] = vec.get(i);
+		}
+
+		return new Result<>(new RectangularMatrix(newmat));
 	}
 
 	@Override
