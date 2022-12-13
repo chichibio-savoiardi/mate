@@ -17,7 +17,8 @@ public class SystemLinearEquations {
 
 	public int[] getRanks() {
 		int ra = a.getRank();
-		int rab = a
+		int rab = a.append(b).getContent().getRank();
+		return new int[]{ra, rab};
 	}
 
 }

@@ -1,15 +1,17 @@
 package mate.matrix;
 
+import utils.result.Panic;
+
 public class SquareMatrix extends RectangularMatrix {
 
 	public SquareMatrix(int n) {
 		super(n, n);
 	}
 
-	public SquareMatrix(double[][] mat) throws RuntimeException {
+	public SquareMatrix(double[][] mat) throws Panic {
 		super(mat);
 		if (mat.length != mat[0].length) {
-			throw new RuntimeException("Matrix is not squared");
+			throw new Panic("Matrix is not squared");
 		}
 	}
 
