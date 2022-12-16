@@ -1,7 +1,6 @@
 package utils.result;
 
 import java.util.function.Supplier;
-
 import lombok.Data;
 
 @Data
@@ -31,7 +30,7 @@ public class Result<T> {
 		this.content = content;
 		this.fullMessage = String.format("%s [%d] %s", content.getClass(), error, message);
 	}
-	
+
 	public T getContent() {
 		if (content == null) {
 			panic();
@@ -39,7 +38,7 @@ public class Result<T> {
 
 		return content;
 	}
-	
+
 	public T getContentUnchecked() {
 		return content;
 	}
@@ -48,7 +47,7 @@ public class Result<T> {
 		if (content == null) {
 			return other;
 		}
-		
+
 		return content;
 	}
 
@@ -56,7 +55,7 @@ public class Result<T> {
 		if (content == null) {
 			return fn.get();
 		}
-		
+
 		return content;
 	}
 
@@ -67,13 +66,8 @@ public class Result<T> {
 	public void throwSilent() throws SilentResultException {
 		throw new SilentResultException(fullMessage);
 	}
-	
+
 	public void panic() {
-		try {
-			throw new Panic(fullMessage);
-		} catch (Panic p) {
-			p.printStackTrace();
-			System.exit(error);
-		}
+		throw new Panic(fullMessage);
 	}
 }

@@ -1,7 +1,9 @@
 package mate.matrix;
 
 import java.util.Random;
+
 import lombok.Getter;
+import mate.matrix.vector.ColVector;
 import utils.result.Result;
 
 /**
@@ -51,7 +53,7 @@ public class RectangularMatrix {
 			mat[i][i] = 1;
 		}
 	}
-	
+
 	public double get(int i, int j) throws IndexOutOfBoundsException {
 		return mat[i][j];
 	}
@@ -96,6 +98,59 @@ public class RectangularMatrix {
 		return new Result<>(new RectangularMatrix(res));
 	}
 
+	public RectangularMatrix transpose() {
+		double[][] res = new double[colLength][rowLength];
+
+		for (int i = 0; i < colLength; i++) {
+			for (int j = 0; j < rowLength; j++) {
+				res[i][j] = mat[j][i];
+			}
+		}
+
+		return new RectangularMatrix(res);
+	}
+
+	public Result<RectangularMatrix> remRow(int row) {
+		if (row < 0 || row >= rowLength) {
+			return new Result<>(1, "Row to delete was out of range");
+		}
+
+		double[][] newmat = new double[rowLength - 1][colLength];
+
+		for (int i = 0, k = 0; i < mat.length; i++) {
+			if (i == row) {
+				continue;
+			}
+
+			for (int j = 0; j < mat[i].length; j++) {
+				newmat[k++][j] = mat[i][j];
+			}
+
+		}
+
+		return new Result<>(new RectangularMatrix(newmat));
+	}
+
+	public Result<RectangularMatrix> remCol(int col) {
+		if (col < 0 || col >= colLength) {
+			return new Result<>(1, "Col to delete was out of range");
+		}
+
+		double[][] newmat = new double[rowLength][colLength - 1];
+
+		for (int i = 0; i < mat.length; i++) {
+			for (int j = 0, k = 0; j < mat[i].length; j++) {
+				if (j == col) {
+					continue;
+				}
+
+				newmat[i][k++] = mat[i][j];
+			}
+		}
+
+		return new Result<>(new RectangularMatrix(newmat));
+	}
+
 	public int getRank() {
 		if (rowLength == colLength) {
 			SquareMatrix sq = new SquareMatrix(mat);
@@ -103,10 +158,10 @@ public class RectangularMatrix {
 				return rowLength;
 			}
 		}
-		
+
 		return getBiggestSquareMatrix().getContent().getRank();
 	}
-	
+
 	public Result<SquareMatrix> getBiggestSquareMatrix() {
 		RectangularMatrix rect = new RectangularMatrix(mat.clone());
 
@@ -125,44 +180,26 @@ public class RectangularMatrix {
 
 		return new Result<>(new SquareMatrix(rect.getMat()));
 	}
-	
-	public Result<RectangularMatrix> remRow(int row) {
-		if (row < 0 || row >= rowLength) {
-			return new Result<>(1, "Row to delete was out of range");
+
+	public Result<SquareMatrix> asSquareMatrix() {
+		if (rowLength != colLength) {
+			return new Result<>(1, "Cannot convert to square, rowLength do not equals colLength");
 		}
 
-		double[][] newmat = new double[rowLength - 1][colLength];
-
-		for (int i = 0, k = 0; i < mat.length; i++) {
-			if (i == row) {
-				continue;
-			}
-
-			for (int j = 0; j < mat[i].length; j++) {
-				newmat[k][j] = mat[i][j];
-			}
-
-			k++;
-		}
-
-		return new Result<>(new RectangularMatrix(newmat));
+		return new Result<>(new SquareMatrix(mat));
 	}
-	
-	public Result<RectangularMatrix> remCol(int col) {
-		if (col < 0 || col >= colLength) {
-			return new Result<>(1, "Col to delete was out of range");
-		}
-		
-		double[][] newmat = new double[rowLength][colLength - 1];
 
-		for (int i = 0; i < mat.length; i++) {
-			for (int j = 0, k = 0; j < mat[i].length; j++) {
-				if (j == col) {
-					continue;
-				}
+	public Result<RectangularMatrix> append(ColVector vec) {
+		double[][] newmat = new double[rowLength][colLength + 1];
 
-				newmat[i][k++] = mat[i][j];
+		for (int i = 0; i < rowLength; i++) {
+			for (int j = 0; j < colLength; j++) {
+				newmat[i][j] = mat[i][j];
 			}
+		}
+
+		for (int i = 0; i < newmat.length; i++) {
+			newmat[i][colLength] = vec.get(i);
 		}
 
 		return new Result<>(new RectangularMatrix(newmat));
