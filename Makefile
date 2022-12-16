@@ -29,13 +29,17 @@ CLS := $(SRCS:$(SRC_DIR)/%.java=$(CLASS_DIR)/%.class)
 run: classes
 	java -cp $(RUN_CP) $(MAIN_CLASS)
 
+# Compile and run jar file
+runjar: jar
+	java -jar $(BUILD_DIR)/$(TARGET_EXEC)
+
 # Compile sources to classes
 classes: $(SRCS)
 	javac -d $(CLASS_DIR) -cp $(BUILD_CP) $(SRCS)
 
 # Generate .jar artifact
 jar: classes
-	jar --create --file $(BUILD_DIR)/$(TARGET_EXEC) --main-class $(MAIN_CLASS).main $(CLS)
+	jar --create --file $(BUILD_DIR)/$(TARGET_EXEC) --main-class $(MAIN_CLASS) -C $(CLASS_DIR) .
 
 # Generate .jar artifact with no main
 jarlib: classes

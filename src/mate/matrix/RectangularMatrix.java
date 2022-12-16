@@ -111,7 +111,9 @@ public class RectangularMatrix {
 		RectangularMatrix rect = new RectangularMatrix(mat.clone());
 
 		do {
-			if (rect.getRowLength() < rect.getColLength()) {
+			if (rect.getRowLength() == rect.getColLength() && rect.getRowLength() <= 1) {
+				break;
+			} else if (rect.getRowLength() < rect.getColLength()) {
 				rect = rect.remCol(rect.getColLength() - 1).getContent();
 			} else if (rect.getRowLength() > rect.getColLength()) {
 				rect = rect.remRow(rect.getRowLength() - 1).getContent();
