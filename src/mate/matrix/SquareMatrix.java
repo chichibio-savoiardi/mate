@@ -2,6 +2,9 @@ package mate.matrix;
 
 import utils.result.Panic;
 
+/**
+ * SquareMatrix
+ */
 public class SquareMatrix extends RectangularMatrix {
 
 	public SquareMatrix(int n) {
