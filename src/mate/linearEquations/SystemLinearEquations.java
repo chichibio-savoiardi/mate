@@ -4,7 +4,6 @@ import mate.matrix.RectangularMatrix;
 import mate.matrix.vector.ColVector;
 
 public class SystemLinearEquations {
-	//
 	RectangularMatrix a;
 	ColVector x;
 	ColVector b;
@@ -15,10 +14,15 @@ public class SystemLinearEquations {
 		this.b = b;
 	}
 
-	public int[] getRanks() {
+	public boolean isCompatible() {
 		int ra = a.getRank();
 		int rab = a.append(b).getContent().getRank();
-		return new int[]{ra, rab};
+		return ra == rab;
 	}
 
+	public int getSolNumber() {
+		int r = a.getRank();
+		int n = x.getRowLength();
+		return r - n;
+	}
 }

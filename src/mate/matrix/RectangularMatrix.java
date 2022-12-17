@@ -9,13 +9,11 @@ import utils.result.Result;
 /**
  * RectangularMatrix
  */
+@Getter
 public class RectangularMatrix {
 
-	@Getter
 	protected double[][] mat;
-	@Getter
 	protected final int rowLength;
-	@Getter
 	protected final int colLength;
 
 	public RectangularMatrix(int rows, int cols) {
@@ -123,9 +121,10 @@ public class RectangularMatrix {
 			}
 
 			for (int j = 0; j < mat[i].length; j++) {
-				newmat[k++][j] = mat[i][j];
+				newmat[k][j] = mat[i][j];
 			}
 
+			k++;
 		}
 
 		return new Result<>(new RectangularMatrix(newmat));
@@ -159,10 +158,10 @@ public class RectangularMatrix {
 			}
 		}
 
-		return getBiggestSquareMatrix().getContent().getRank();
+		return getBiggestSquareMatrix().getRank();
 	}
 
-	public Result<SquareMatrix> getBiggestSquareMatrix() {
+	public SquareMatrix getBiggestSquareMatrix() {
 		RectangularMatrix rect = new RectangularMatrix(mat.clone());
 
 		do {
@@ -178,7 +177,7 @@ public class RectangularMatrix {
 			}
 		} while (rect.getRowLength() != rect.getColLength());
 
-		return new Result<>(new SquareMatrix(rect.getMat()));
+		return new SquareMatrix(rect.getMat());
 	}
 
 	public Result<SquareMatrix> asSquareMatrix() {

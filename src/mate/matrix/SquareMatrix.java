@@ -46,7 +46,7 @@ public class SquareMatrix extends RectangularMatrix {
 		double out = 0;
 
 		for (int i = 0; i < mat[0].length; i++) {
-			SquareMatrix s1 = this.getBiggestSquareMatrix().getContent();
+			SquareMatrix s1 = this.getBiggestSquareMatrix();
 			double det = s1.getDeterminant();
 			out += Math.pow(-1, i) * mat[0][i] * det;
 		}
