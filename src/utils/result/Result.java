@@ -22,15 +22,13 @@ public class Result<T> {
 		this.error = err;
 		this.message = msg;
 		this.content = content;
-		String contentClass = content == null ? "NULL" : content.getClass().toString();
-		this.fullMessage = String.format("%s [%d] %s", contentClass, error, message);
+		this.fullMessage = String.format("%s [%d] %s", content != null ? content.getClass() : "NULL", error, message);
 	}
 
 	public T getContent() {
 		if (content == null) {
 			panic();
 		}
-
 		return content;
 	}
 
@@ -39,19 +37,11 @@ public class Result<T> {
 	}
 
 	public T getContentOr(T other) {
-		if (content == null) {
-			return other;
-		}
-
-		return content;
+		return content != null ? content : other;
 	}
 
 	public T getContentOrElse(Supplier<T> fn) {
-		if (content == null) {
-			return fn.get();
-		}
-
-		return content;
+		return content != null ? content : fn.get();
 	}
 
 	public void throwLoud() throws LoudResultException {
