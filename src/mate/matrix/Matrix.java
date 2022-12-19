@@ -2,9 +2,6 @@ package mate.matrix;
 
 import lombok.Getter;
 import java.util.Random;
-
-import javax.print.attribute.standard.MediaSize.Other;
-
 import utils.result.Result;
 import mate.matrix.vector.ColVector;
 
@@ -146,11 +143,9 @@ public abstract class Matrix implements Comparable<Matrix> {
 	}
 
 	public int getRank() {
-		if (rowLength == colLength) {
-			SquareMatrix sq = new SquareMatrix(mat);
-			if (sq.getDeterminant() != 0) {
-				return rowLength;
-			}
+		Result<SquareMatrix> sq = this.asSquareMatrix();
+		if (sq.getError() == 0 && sq.getContent().getDeterminant() != 0) {
+			return rowLength;
 		}
 
 		return getBiggestSquareMatrix().getRank();
