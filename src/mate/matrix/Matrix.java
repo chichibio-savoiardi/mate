@@ -2,6 +2,9 @@ package mate.matrix;
 
 import lombok.Getter;
 import java.util.Random;
+
+import javax.print.attribute.standard.MediaSize.Other;
+
 import utils.result.Result;
 import mate.matrix.vector.ColVector;
 
@@ -233,21 +236,11 @@ public abstract class Matrix implements Comparable<Matrix> {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Matrix)) {
-			return false;
+		if (obj instanceof Matrix m) {
+			return compareTo(m) == 0;
 		}
 
-		Matrix m = (Matrix) obj;
-		
-		for (int i = 0; i < m.getRowLength(); i++) {
-			for (int j = 0; j < m.getColLength(); j++) {
-				if (mat[i][j] != m.get(i, j)) {
-					return false;
-				}
-			}
-		}
-
-		return true;
+		return false;
 	}
 
 	@Override
