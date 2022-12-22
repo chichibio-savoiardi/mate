@@ -44,6 +44,15 @@ public abstract class Matrix implements Comparable<Matrix> {
 			mat[i][i] = 1;
 		}
 	}
+	
+	public void initRowEchelon(int min, int max) {
+		Random rng = new Random();
+		for (int i = 0; i < mat.length; i++) {
+			for (int j = 0; j < mat[i].length; j++) {
+				mat[i][j] = i > j ? 0 : rng.nextInt(min, max);
+			}
+		}
+	}
 
 	public double get(int i, int j) throws IndexOutOfBoundsException {
 		return mat[i][j];
@@ -53,7 +62,7 @@ public abstract class Matrix implements Comparable<Matrix> {
 		mat[i][j] = v;
 	}
 
-	public Result<RectangularMatrix> sum(RectangularMatrix other) {
+	public Result<Matrix> sum(RectangularMatrix other) {
 		if (this.rowLength != other.getRowLength() || this.colLength != other.getColLength()) {
 			return new Result<>(1, "Matrixes are not equally sized");
 		}
@@ -69,7 +78,7 @@ public abstract class Matrix implements Comparable<Matrix> {
 		return new Result<>(new RectangularMatrix(out));
 	}
 
-	public Result<RectangularMatrix> product(RectangularMatrix other) {
+	public Result<Matrix> product(RectangularMatrix other) {
 		if (colLength != other.getRowLength()) {
 			return new Result<>(1, "Number of columns does not equal number of rows");
 		}
@@ -89,7 +98,7 @@ public abstract class Matrix implements Comparable<Matrix> {
 		return new Result<>(new RectangularMatrix(res));
 	}
 
-	public RectangularMatrix transpose() {
+	public Matrix transpose() {
 		double[][] res = new double[colLength][rowLength];
 
 		for (int i = 0; i < colLength; i++) {
@@ -101,7 +110,7 @@ public abstract class Matrix implements Comparable<Matrix> {
 		return new RectangularMatrix(res);
 	}
 
-	public Result<RectangularMatrix> remRow(int row) {
+	public Result<Matrix> remRow(int row) {
 		if (row < 0 || row >= rowLength) {
 			return new Result<>(1, "Row to delete was out of range");
 		}
@@ -123,7 +132,7 @@ public abstract class Matrix implements Comparable<Matrix> {
 		return new Result<>(new RectangularMatrix(newmat));
 	}
 
-	public Result<RectangularMatrix> remCol(int col) {
+	public Result<Matrix> remCol(int col) {
 		if (col < 0 || col >= colLength) {
 			return new Result<>(1, "Col to delete was out of range");
 		}
@@ -157,16 +166,24 @@ public abstract class Matrix implements Comparable<Matrix> {
 
 		do {
 			if (rect.getRowLength() < rect.getColLength()) {
-				rect = rect.remCol(rect.getColLength() - 1).getContent();
+				rect = rect.remCol(rect.getColLength() - 1).getContent().asRectangularMatrix();
 			} else if (rect.getRowLength() > rect.getColLength()) {
-				rect = rect.remRow(rect.getRowLength() - 1).getContent();
-			} else if (rect.getRowLength() > 1) {
-				rect = rect.remRow(rect.getRowLength() - 1).getContent();
-				rect = rect.remCol(rect.getColLength() - 1).getContent();
+				rect = rect.remRow(rect.getRowLength() - 1).getContent().asRectangularMatrix();
+			} else if (rect.getRowLength() == rect.getColLength() && rect.getRowLength() > 1) {
+				rect = rect.remRow(rect.getRowLength() - 1).getContent().asRectangularMatrix();
+				rect = rect.remCol(rect.getColLength() - 1).getContent().asRectangularMatrix();
 			}
 		} while (rect.getRowLength() != rect.getColLength());
 
-		return new SquareMatrix(rect.getMat());
+		return rect.asSquareMatrix().getContent();
+	}
+	
+	public Matrix asMatrix() {
+		return (Matrix) this;
+	}
+
+	public RectangularMatrix asRectangularMatrix() {
+		return new RectangularMatrix(mat);
 	}
 
 	public Result<SquareMatrix> asSquareMatrix() {
@@ -177,7 +194,7 @@ public abstract class Matrix implements Comparable<Matrix> {
 		return new Result<>(new SquareMatrix(mat));
 	}
 
-	public RectangularMatrix append(RowVector vec) {
+	public Matrix append(RowVector vec) {
 		double[][] newmat = new double[rowLength + 1][colLength];
 
 		for (int i = 0; i < rowLength; i++) {
@@ -191,7 +208,7 @@ public abstract class Matrix implements Comparable<Matrix> {
 		return new RectangularMatrix(newmat);
 	}
 
-	public RectangularMatrix append(ColVector vec) {
+	public Matrix append(ColVector vec) {
 		double[][] newmat = new double[rowLength][colLength + 1];
 
 		for (int i = 0; i < rowLength; i++) {
@@ -214,8 +231,8 @@ public abstract class Matrix implements Comparable<Matrix> {
 	public double getSumOfSquaredElements() {
 		double acc = 0;
 
-		for (int i = 0; i < getRowLength(); i++) {
-			for (int j = 0; j < getColLength(); j++) {
+		for (int i = 0; i < rowLength; i++) {
+			for (int j = 0; j < colLength; j++) {
 				acc += Math.pow(mat[i][j], 2);
 			}
 		}
@@ -223,9 +240,68 @@ public abstract class Matrix implements Comparable<Matrix> {
 		return acc;
 	}
 	
-	public RectangularMatrix getRowEchelonForm() {
+	public Matrix getRowEchelonForm() {
 		// TODO
 		return null;
+	}
+	
+	public boolean isRowEchelonForm() {
+		int last = -1;
+
+		for (int i = 0; i < mat.length; i++) {
+			for (int j = 0; j < mat.length; j++) {
+				if (mat[i][j] != 0 && last >= j) {
+					return false;
+				}
+				if (mat[i][j] != 0) {
+					last = j;
+					break;
+				}
+			}
+		}
+
+		return true;
+	}
+	
+	public Matrix swapRows(int ri, int rj) {
+		if ((ri < 0 || ri >= rowLength) || (rj < 0 || rj >= rowLength)) {
+			throw new IndexOutOfBoundsException("Rows to be swapped were out of bounds");
+		}
+
+		double[][] newmat = mat.clone();
+		newmat[ri] = mat[rj];
+		newmat[rj] = mat[ri];
+		return new RectangularMatrix(newmat);
+	}
+	
+	public Matrix multiplyRow(int ri, double c) {
+		if (ri < 0 || ri >= rowLength) {
+			throw new IndexOutOfBoundsException("Rows to be swapped were out of bounds");
+		}
+		if (c == 0) {
+			throw new ArithmeticException("c may not be 0");
+		}
+
+		double[][] newmat = mat.clone();
+		for (int i = 0; i < newmat.length; i++) {
+			newmat[ri][i] = c * mat[ri][i];
+		}
+		return new RectangularMatrix(newmat);
+	}
+	
+	public Matrix addRows(int ri, int rj, double c) {
+		if (c == 0) {
+			throw new ArithmeticException("c may not be 0");
+		}
+		if ((ri < 0 || ri >= rowLength) || (rj < 0 || rj >= rowLength)) {
+			throw new IndexOutOfBoundsException("Rows to be swapped were out of bounds");
+		}
+
+		double[][] newmat = mat.clone();
+		for (int i = 0; i < newmat.length; i++) {
+			newmat[ri][i] += c * mat[rj][i];
+		}
+		return new RectangularMatrix(newmat);
 	}
 
 	/**
