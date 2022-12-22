@@ -4,6 +4,7 @@ import lombok.Getter;
 import java.util.Random;
 import utils.result.Result;
 import mate.matrix.vector.ColVector;
+import mate.matrix.vector.RowVector;
 
 /**
  * Matrix
@@ -155,13 +156,11 @@ public abstract class Matrix implements Comparable<Matrix> {
 		RectangularMatrix rect = new RectangularMatrix(mat.clone());
 
 		do {
-			if (rect.getRowLength() == rect.getColLength() && rect.getRowLength() <= 1) {
-				break;
-			} else if (rect.getRowLength() < rect.getColLength()) {
+			if (rect.getRowLength() < rect.getColLength()) {
 				rect = rect.remCol(rect.getColLength() - 1).getContent();
 			} else if (rect.getRowLength() > rect.getColLength()) {
 				rect = rect.remRow(rect.getRowLength() - 1).getContent();
-			} else {
+			} else if (rect.getRowLength() > 1) {
 				rect = rect.remRow(rect.getRowLength() - 1).getContent();
 				rect = rect.remCol(rect.getColLength() - 1).getContent();
 			}
@@ -178,7 +177,21 @@ public abstract class Matrix implements Comparable<Matrix> {
 		return new Result<>(new SquareMatrix(mat));
 	}
 
-	public Result<RectangularMatrix> append(ColVector vec) {
+	public RectangularMatrix append(RowVector vec) {
+		double[][] newmat = new double[rowLength + 1][colLength];
+
+		for (int i = 0; i < rowLength; i++) {
+			for (int j = 0; j < colLength; j++) {
+				newmat[i][j] = mat[i][j];
+			}
+		}
+
+		newmat[rowLength] = vec.getMat()[0];
+
+		return new RectangularMatrix(newmat);
+	}
+
+	public RectangularMatrix append(ColVector vec) {
 		double[][] newmat = new double[rowLength][colLength + 1];
 
 		for (int i = 0; i < rowLength; i++) {
@@ -191,7 +204,7 @@ public abstract class Matrix implements Comparable<Matrix> {
 			newmat[i][colLength] = vec.get(i);
 		}
 
-		return new Result<>(new RectangularMatrix(newmat));
+		return new RectangularMatrix(newmat);
 	}
 	
 	/**

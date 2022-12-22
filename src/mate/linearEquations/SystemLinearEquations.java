@@ -16,7 +16,7 @@ public class SystemLinearEquations {
 
 	public boolean isCompatible() {
 		int ra = a.getRank();
-		int rab = a.append(b).getContent().getRank();
+		int rab = a.append(b).getRank();
 		return ra == rab;
 	}
 
